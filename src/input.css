@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+/* Slim scrollbar for the results list - Tailwind v4 has no built-in utility for this. */
+#list {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-slate-300) transparent;
+}
+#list::-webkit-scrollbar {
+  width: 8px;
+}
+#list::-webkit-scrollbar-thumb {
+  background-color: var(--color-slate-300);
+  border-radius: 9999px;
+}
+@media (prefers-color-scheme: dark) {
+  #list {
+    scrollbar-color: var(--color-slate-600) transparent;
+  }
+  #list::-webkit-scrollbar-thumb {
+    background-color: var(--color-slate-600);
+  }
+}

@@ -1,0 +1,21 @@
+Windows Registry Editor Version 5.00
+
+; Registers a custom "potplayer://" URL protocol under the current user
+; (no admin rights needed) that hands the URL off to open-in-potplayer.ps1,
+; which strips the "potplayer://" prefix and launches PotPlayer with it.
+;
+; Double-click this file (or run: reg import register-potplayer-protocol.reg)
+; then click "Play in PotPlayer" in the Video URL Finder popup. The first
+; time, Chrome/Edge will ask to confirm launching an external application -
+; check "Always allow" if you don't want to be asked again.
+
+[HKEY_CURRENT_USER\Software\Classes\potplayer]
+@="URL:PotPlayer Protocol"
+"URL Protocol"=""
+
+[HKEY_CURRENT_USER\Software\Classes\potplayer\shell]
+
+[HKEY_CURRENT_USER\Software\Classes\potplayer\shell\open]
+
+[HKEY_CURRENT_USER\Software\Classes\potplayer\shell\open\command]
+@="powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File \"D:\\Mindset 2.0\\Develop Projects\\URL Finder\\tools\\potplayer\\open-in-potplayer.ps1\" \"%1\""

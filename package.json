@@ -1,0 +1,19 @@
+{
+  "name": "url-finder",
+  "version": "1.0.0",
+  "description": "Chrome/Edge (Manifest V3) extension that scans the current tab and lists direct video links it finds — `.mp4`, `.mkv`, `.webm`, `.avi`, `.mov`, `.flv`, and more, plus streaming manifests (`.m3u8`, `.mpd`).",
+  "private": true,
+  "scripts": {
+    "build:css": "tailwindcss -i ./src/input.css -o ./popup.css --minify",
+    "watch:css": "tailwindcss -i ./src/input.css -o ./popup.css --watch",
+    "build": "npm run build:css && python tools/build.py"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@phosphor-icons/web": "^2.1.2",
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  }
+}
