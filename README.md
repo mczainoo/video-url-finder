@@ -24,13 +24,23 @@ copy, open, or play them without digging through devtools.
 
 ## Install
 
-### From source (recommended for now — not yet published to a store)
+Not yet published to the Chrome Web Store or Edge Add-ons, so installing
+means loading it unpacked — either way below gets you the same thing.
 
-1. Clone or [download this repo](../../archive/refs/heads/main.zip) and unzip it.
-2. Go to `chrome://extensions` (Chrome) or `edge://extensions` (Edge).
-3. Turn on **Developer mode** (top-right toggle).
-4. Click **Load unpacked** and select the project folder.
-5. Pin the extension, open any page with video, and click the icon.
+### Option 1: Download the packaged release (recommended)
+
+1. Go to the [latest release](https://github.com/mczainoo/video-url-finder/releases/latest)
+   and download the `video-url-finder-vX.Y.Z.zip` asset.
+2. Unzip it.
+3. Go to `chrome://extensions` (Chrome) or `edge://extensions` (Edge).
+4. Turn on **Developer mode** (top-right toggle).
+5. Click **Load unpacked** and select the unzipped folder.
+6. Pin the extension, open any page with video, and click the icon.
+
+### Option 2: From source
+
+1. Clone this repo (or [download the source zip](../../archive/refs/heads/main.zip)) and unzip it.
+2. Repeat steps 3-6 above, pointing **Load unpacked** at the project folder.
 
 Use **Rescan** in the popup after a video starts playing — some players only
 request the file once you hit play.
