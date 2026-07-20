@@ -20,8 +20,14 @@ function addUrl(tabId, url, source) {
 
 function updateBadge(tabId) {
   const count = getTabMap(tabId).size;
-  chrome.action.setBadgeText({ tabId, text: count ? String(count) : "" });
-  chrome.action.setBadgeBackgroundColor({ tabId, color: "#4F46E5" });
+  // Tab may have closed between the triggering event and this call (e.g. a
+  // network request resolving after its tab was closed) - ignore that race.
+  chrome.action
+    .setBadgeText({ tabId, text: count ? String(count) : "" })
+    .catch(() => {});
+  chrome.action
+    .setBadgeBackgroundColor({ tabId, color: "#4F46E5" })
+    .catch(() => {});
 }
 
 // Catch network requests for media files / playlists that never show up as
