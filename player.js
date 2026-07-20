@@ -1,6 +1,17 @@
 const titleEl = document.getElementById("title");
 const errorEl = document.getElementById("error");
 const videoEl = document.getElementById("player");
+const extBadgeEl = document.getElementById("extBadge");
+const copyBtn = document.getElementById("copyBtn");
+const shareBtn = document.getElementById("shareBtn");
+const potBtn = document.getElementById("potBtn");
+
+const BADGE_CLASSES = {
+  file: "bg-indigo-500/15 text-indigo-300",
+  stream: "bg-amber-500/15 text-amber-300",
+};
+const COPY_ICON = '<i class="ph ph-copy text-sm leading-none"></i><span class="hidden sm:inline">Copy</span>';
+const CHECK_ICON = '<i class="ph ph-check text-sm leading-none text-emerald-400"></i><span class="hidden sm:inline">Copied</span>';
 
 const url = new URLSearchParams(window.location.search).get("url") || "";
 
@@ -113,17 +124,62 @@ function playDash(mpdUrl) {
   });
 }
 
+async function copyUrl() {
+  try {
+    await navigator.clipboard.writeText(url);
+    copyBtn.innerHTML = CHECK_ICON;
+    setTimeout(() => (copyBtn.innerHTML = COPY_ICON), 1200);
+  } catch {
+    showError("Couldn't access the clipboard.");
+  }
+}
+
+async function shareUrl() {
+  const shareData = { title: filenameOf(url), url };
+  if (navigator.share && (!navigator.canShare || navigator.canShare(shareData))) {
+    try {
+      await navigator.share(shareData);
+      return;
+    } catch (err) {
+      if (err?.name === "AbortError") return; // user dismissed the share sheet
+    }
+  }
+  // No OS share sheet available (or it failed) - copying is the next best thing.
+  await copyUrl();
+}
+
+function playInPotPlayer() {
+  // Requires the one-time "potplayer://" protocol registration in
+  // tools/potplayer/ - the browser hands this off to the OS, which launches
+  // PotPlayer directly on the URL instead of downloading/streaming in-tab.
+  window.location.href = `potplayer://${url}`;
+}
+
 if (!url) {
   showError("No video URL was given to play.");
 } else {
+  const ext = extensionOf(url);
+  const isStream = STREAM_EXTENSIONS.includes(ext);
+
   titleEl.textContent = filenameOf(url);
+  titleEl.title = url;
   document.title = `${filenameOf(url)} — Video URL Finder`;
+
+  if (ext) {
+    extBadgeEl.textContent = ext;
+    extBadgeEl.className = `shrink-0 rounded-md px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide ${
+      BADGE_CLASSES[isStream ? "stream" : "file"]
+    }`;
+  }
+
+  copyBtn.addEventListener("click", copyUrl);
+  shareBtn.addEventListener("click", shareUrl);
+  potBtn.addEventListener("click", playInPotPlayer);
 
   videoEl.addEventListener("error", () => {
     showError("This browser couldn't play the video — the format may be unsupported, or the source may block direct playback.");
   });
 
-  const ext = extensionOf(url);
   if (ext === "m3u8") {
     playHls(url);
   } else if (ext === "mpd") {
