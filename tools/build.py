@@ -19,9 +19,12 @@ INCLUDE = [
     "popup.html",
     "popup.js",
     "popup.css",
+    "player.html",
+    "player.js",
     "phosphor.css",
     "fonts",
     "icons",
+    "vendor",
 ]
 
 

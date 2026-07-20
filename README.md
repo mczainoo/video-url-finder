@@ -16,8 +16,9 @@ copy, open, or play them without digging through devtools.
   network requests, so it catches videos that only load once you hit play.
 - **Dedupes intelligently**: the same file requested twice with a different
   signed token or cache-busting query string still collapses into one entry.
-- **One-click actions** per link: copy, open in a new tab, or play instantly
-  in [PotPlayer](https://potplayer.daum.net/) (Windows).
+- **One-click actions** per link: copy, play in a dedicated in-browser player
+  (via [Plyr](https://github.com/sampotts/plyr)), or play instantly in
+  [PotPlayer](https://potplayer.daum.net/) (Windows).
 - **Clean, themeable UI**: Tailwind CSS, follows your system's light/dark
   mode automatically.
 - **No tracking, no network calls of its own** — see [Privacy](#privacy).
@@ -66,6 +67,13 @@ requests made *by* the extension itself. The broad `host_permissions`
 script can watch the **current tab's own** network requests locally, to spot
 video URLs; nothing is sent anywhere. All video links stay in memory for that
 tab and are cleared on navigation or when the tab closes.
+
+## Play in a new tab
+
+The monitor-play button next to each link opens the video in a dedicated
+player page (`player.html`) inside the extension, using
+[Plyr](https://github.com/sampotts/plyr) — self-hosted, no CDN — for a
+cleaner, themeable player than the browser's bare `<video>` controls.
 
 ## Play in PotPlayer (fast playback, no in-tab download)
 
@@ -145,7 +153,9 @@ for a new release.
 - `popup.html/js` — the toolbar popup UI (list, copy, open, rescan).
 - `popup.css` — **generated** by Tailwind from `src/input.css` — don't edit by hand.
 - `src/input.css` — Tailwind entry point/custom scrollbar styling; edit this instead.
+- `player.html/js` — dedicated Plyr-powered player page, opened in a new tab.
 - `phosphor.css` / `fonts/Phosphor.woff2` — self-hosted Phosphor icon subset.
+- `vendor/plyr/` — self-hosted [Plyr](https://github.com/sampotts/plyr) build (CSS/JS/icon sprite) used by `player.html`.
 - `icons/` — toolbar icon.
 - `tools/potplayer/` — one-time setup to enable "Play in PotPlayer" (see above).
 - `tools/build.py` — packages a clean `dist/` + `.zip` for distribution (see above).

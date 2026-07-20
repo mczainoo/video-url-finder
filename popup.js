@@ -50,6 +50,9 @@ function render(videos) {
       link.title = video.url;
       link.querySelector(".urlText").textContent = video.url;
 
+      const playTabBtn = node.querySelector(".playTabBtn");
+      playTabBtn.addEventListener("click", () => playInNewTab(video.url));
+
       const playBtn = node.querySelector(".playBtn");
       playBtn.addEventListener("click", () => playInPotPlayer(video.url));
 
@@ -62,6 +65,10 @@ function render(videos) {
 
   countEl.textContent = `${videos.length} link${videos.length === 1 ? "" : "s"} found`;
   copyAllBtn.disabled = videos.length === 0;
+}
+
+function playInNewTab(url) {
+  chrome.tabs.create({ url: `${chrome.runtime.getURL("player.html")}?url=${encodeURIComponent(url)}` });
 }
 
 function playInPotPlayer(url) {
